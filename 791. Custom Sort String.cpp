@@ -1,28 +1,22 @@
 class Solution {
 public:
     string customSortString(string order, string s) {
-        unordered_map<char, int> m;
-        for(int i = 0; i < s.size(); i++)
-            m[s[i]]++;
-
-        string ans = "";
-        for(int i = 0; i < order.size(); i++)
-        {
-            if(!m.count(order[i]))
-                continue;
-            else while(m[order[i]] > 0)
-            {
-                ans.push_back(order[i]);
-                m[order[i]]--;
-            }
-        }  
-        for(int i = 0; i < s.size(); i++)
-            while(m[s[i]] > 0)
-            {
-                ans.push_back(s[i]);
-                m[s[i]]--;
-            }
-
-        return ans;
+        vector<pair<int,char>>pos; 
+        int n=order.size();
+        for(int i=0;i<n;i++) pos.push_back({i,order[i]}) ;
+        sort(pos.begin(),pos.end()); 
+        unordered_map<char,int>freq; 
+        for(auto&ch:s) freq[ch]++; 
+        string res;
+        for(auto&[occ,ch]:pos){
+                int appear = freq[ch]; 
+                while(appear--) res+=ch;
+                freq[ch]=0;
+        }
+        for(auto&it:freq){
+            int appear = it.second;
+            while(appear--) res+=it.first;
+        }
+    return res;
     }
 };
